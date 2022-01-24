@@ -10,7 +10,8 @@ import { Task } from './App';
 import TaskBloc from './TaskBloc';
 
 export interface TaskListProps{
-    list: Array<Task>
+    list: Array<Task>,
+    callback: Function
 }
 
 export default function TaskList(props: TaskListProps) {
@@ -28,8 +29,7 @@ export default function TaskList(props: TaskListProps) {
                     <TableBody>
                       
                       {props.list.map((row) => (
-                        <TaskBloc task={row} />
-                          
+                        <TaskBloc task={row} callback={props.callback}/>
                       ))}
                     </TableBody>
                   </Table>

@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import TaskList from './TaskList';
 
@@ -9,49 +9,41 @@ export interface Task{
       done: boolean;
 };
 
-
-
 function App() {
 
   const [tasks, setTasks] = useState<Array<Task>>([])
 
-  const tasks2: Array<Task> = [];
-  tasks2.push({
-    id:0,
-    description: "test1",
-    done:false
-  });
-  tasks2.push({
-    id:1,
-    description: "test2",
-    done:true
-  });
-  tasks2.push({
-    id:2,
-    description: "test3",
-    done:false
-  });
-  tasks2.push({
-    id:3,
-    description: "test4",
-    done:true
-  });
+        useEffect(()=>{
+          const newTasks: Array<Task> = [];
+          setTasks(newTasks)
+    },[])
 
-  setTasks(tasks2)
+    useEffect(()=> {
+      console.log(tasks)
+    },[tasks])
 
   function newTask(){
-      tasks2.push({
-        id: 4,
+      tasks.push({
+        id: tasks.length+1,
         description: "new test",
         done:false
       })
-      setTasks([...tasks2])
+      setTasks([...tasks])
   }
 
+  const onTaskUpdate = (task: Task) => {
+      for (let i = 0; i<tasks.length; i++) {
+        if (tasks[i].id === task.id) {
+          tasks[i] = task
+          break
+        }
+      }
+      setTasks([...tasks])
+  }
 
   return (
     <div>
-      <TaskList list={tasks}/>
+      <TaskList list={tasks} callback={onTaskUpdate}/>
       <Button variant="contained" onClick={newTask}>Contained</Button>
     </div>
   );
